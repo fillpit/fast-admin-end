@@ -1,0 +1,53 @@
+# 服务器配置
+app:
+  name: fast-admin-end
+  redis-key-prefix: fast_admin_end_
+  upload:
+    enable: true
+    upload-path-pattern: /upload/**
+  jwt:
+    header: "Access-Token"
+    secret: ${JWT_SECRET:mySecret}
+    expiration: 86400
+    token-head: "Bearer "
+
+
+# 内置 tomcat 服务器配置
+server:
+  port: 8090 # 指定端口
+  servlet:
+    context-path: /admin # 指定访问上下文路径(访问时要在端口后面加上这个路径)
+  address: 0.0.0.0 # 绑定本地IP(mac os 环境下不设置无法在局域网中访问)
+
+# spring 配置
+spring:
+  # 项目环境配置
+  profiles:
+    active: @profiles.active@ # 这个变量的值取决于 maven 中的环境变量的值
+  main:
+    allow-bean-definition-overriding: true
+  aop:
+    auto: true
+    proxy-target-class: true
+  # 发送邮件
+  mail:
+    host: ${MAIL_SMTP:smtp.qq.com}
+    port: ${MAIL_PORT:465}
+    default-encoding: utf-8
+    username: ${MAIL_USER_NAME:xxx}
+    password: ${MAIL_PASSWORD:xxx}
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+            required: true
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  # 缓存
+  cache:
+    cache-names: menus_cache,role_cache
+    redis:
+      time-to-live: 1800s

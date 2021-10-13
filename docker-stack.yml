@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  fast-admin-end:
+    image: fast-admin
+      ports:
+        - 8090:8090
+
