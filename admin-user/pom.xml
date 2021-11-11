@@ -11,7 +11,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>admin-user</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 
   <dependencies>
 
@@ -46,6 +46,12 @@
     <dependency>
       <groupId>org.quartz-scheduler</groupId>
       <artifactId>quartz</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+      <version>2.5.6</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 

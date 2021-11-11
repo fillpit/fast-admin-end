@@ -6,6 +6,7 @@
     <groupId>com.kenfei.admin</groupId>
     <artifactId>admin-parent</artifactId>
     <version>1.0.0</version>
+    <relativePath />
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -21,7 +22,7 @@
     <dependency>
       <groupId>com.kenfei.admin</groupId>
       <artifactId>admin-user</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
     </dependency>
 
     <dependency>
