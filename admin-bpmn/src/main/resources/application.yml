@@ -1,0 +1,14 @@
+
+# 工作流配置
+flowable:
+  check-process-definitions: false
+  database-schema-update: true
+  history-level: full
+  db-history-used: true
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      location: ./file/
+      file-size-threshold: 5MB
+      max-file-size: 20MB
