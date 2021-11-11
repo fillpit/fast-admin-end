@@ -1,12 +1,11 @@
 package com.admin.auth.config;
 
 import com.admin.auth.config.properties.TokenProperties;
-import com.admin.core.config.properties.AppProperties;
-import com.admin.core.config.properties.UploadProperties;
 import com.admin.core.repository.Response;
 import com.admin.auth.config.security.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired private UrlAccessDecisionManager urlAccessDecisionManager;
   @Autowired private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
+  @Value("${app.location.source-url}")
+  private String localSourceMapping;
+
   @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
   @Override
   public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -65,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     web.ignoring()
         .antMatchers(HttpMethod.GET, "/index.html", "/static/**")
         .mvcMatchers("/api/auth/**")
-        .mvcMatchers("/upload/**");
+        .mvcMatchers(localSourceMapping);
   }
 
   @Override

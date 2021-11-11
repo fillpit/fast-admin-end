@@ -3,13 +3,13 @@ package com.admin.auth.service;
 import com.admin.auth.config.security.JwtUser;
 import com.admin.auth.model.CurrentUser;
 import com.admin.core.exception.AppException;
-import com.admin.core.config.properties.UploadProperties;
 import com.admin.core.utils.FileUtils;
 import com.admin.quartz.utils.StringUtils;
 import com.admin.user.entity.SysMenuEntity;
 import com.admin.user.entity.SysUserEntity;
 import com.admin.user.service.SysMenuService;
 import com.admin.user.service.SysUserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,15 +21,17 @@ import java.util.*;
  */
 @Service
 public class LoginUserService {
-
   private final SysMenuService sysMenuService;
   private final SysUserService sysUserService;
-  private final UploadProperties uploadProperties;
 
-  public LoginUserService(SysMenuService sysMenuService, SysUserService sysUserService, UploadProperties uploadProperties) {
+  @Value("${spring.servlet.multipart.location}")
+  private String filePath;
+
+  private static final String FOLDER = "avatar/";
+
+  public LoginUserService(SysMenuService sysMenuService, SysUserService sysUserService) {
     this.sysMenuService = sysMenuService;
     this.sysUserService = sysUserService;
-    this.uploadProperties = uploadProperties;
   }
 
   /**
@@ -37,7 +39,7 @@ public class LoginUserService {
    * @return /
    */
   public SysUserEntity loginUser() {
-    return sysUserService.findById(CurrentUser.currentUserId());
+    return sysUserService.findById(CurrentUser.userId());
   }
 
   /**
@@ -67,13 +69,13 @@ public class LoginUserService {
     if(fileType != null && !image.contains(fileType)){
       throw new AppException("文件格式错误！, 仅支持 " + image +" 格式");
     }
-    SysUserEntity user = sysUserService.findById(CurrentUser.currentUserId());
+    SysUserEntity user = sysUserService.findById(CurrentUser.userId());
     String oldPath = user.getAvatar();
-    String fileName = FileUtils.upload(multipartFile, uploadProperties.getSavePath());
+    String fileName = FileUtils.upload(multipartFile, getSavePath());
     user.setAvatar(Objects.requireNonNull(fileName));
     sysUserService.update(user);
     if (StringUtils.hasLength(oldPath)) {
-      FileUtils.del(uploadProperties.getSavePath() + oldPath);
+      FileUtils.del(getSavePath() + oldPath);
     }
 
     return "upload/" + fileName;
@@ -82,4 +84,13 @@ public class LoginUserService {
   public void updateCenter(SysUserEntity entity) {
     sysUserService.update(entity);
   }
+
+  /**
+   * 获取头像保存的路径
+   * @return
+   */
+  private String getSavePath() {
+    return filePath + FOLDER;
+  }
 }
+

@@ -18,7 +18,7 @@ public class CurrentUser {
    * 获取当前用户方法
    * @return 当前用户
    */
-  public static JwtUser currentUser() {
+  public static JwtUser user() {
     return (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 
@@ -27,8 +27,8 @@ public class CurrentUser {
    *
    * @return 用户名
    */
-  public static Optional<String> currentUserName() {
-    return Optional.of(currentUser())
+  public static Optional<String> userName() {
+    return Optional.of(user())
       .map(JwtUser::getUsername);
   }
 
@@ -36,14 +36,14 @@ public class CurrentUser {
    * 获取当前用户ID
    * @return 用户ID
    */
-  public static Long currentUserId() {
-    return Optional.of(currentUser())
+  public static Long userId() {
+    return Optional.of(user())
       .map(JwtUser::getId)
       .orElseThrow(UserNotInitException::new);
   }
 
   public static Set<JwtUser.JwtRole> currentUserRole() {
-    return Optional.of(currentUser())
+    return Optional.of(user())
       .map(JwtUser::getRoles)
       .orElseThrow(UserNotInitException::new);
   }

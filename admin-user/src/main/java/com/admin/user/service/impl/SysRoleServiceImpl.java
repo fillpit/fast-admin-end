@@ -46,7 +46,7 @@ public class SysRoleServiceImpl extends AbstractServiceImpl<SysRoleEntity, Long>
 
   @Override
   public Integer getLevels() {
-    List<Integer> levels = sysRoleRepository.findByUserId(CurrentUser.currentUserId()).stream().map(SysRoleEntity::getLevel).collect(Collectors.toList());
+    List<Integer> levels = sysRoleRepository.findByUserId(CurrentUser.userId()).stream().map(SysRoleEntity::getLevel).collect(Collectors.toList());
 
     return Collections.min(levels);
   }

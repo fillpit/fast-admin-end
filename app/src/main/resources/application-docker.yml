@@ -40,6 +40,14 @@ spring:
     database: 0 #默认是索引为的0的数据库
     password:
 
+  # 文件上传
+  servlet:
+    multipart:
+      enabled: true
+      location: ./file/
+      file-size-threshold: 5MB
+      max-file-size: 20MB
+
 # 屏蔽 包 输出日志(示例)
 logging:
   level:

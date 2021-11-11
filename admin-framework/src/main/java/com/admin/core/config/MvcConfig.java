@@ -1,7 +1,6 @@
 package com.admin.core.config;
 
 import com.admin.core.config.properties.AppProperties;
-import com.admin.core.config.properties.UploadProperties;
 import com.admin.core.converter.DateConverter;
 import com.admin.core.converter.EnumConverter;
 import com.admin.core.resolvers.CustomerArgumentResolver;
@@ -9,6 +8,7 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -44,23 +44,25 @@ import java.util.TimeZone;
 @EnableAsync
 @RequiredArgsConstructor
 @Configuration("coreConfig")
-@EnableConfigurationProperties({AppProperties.class, UploadProperties.class})
+@EnableConfigurationProperties({AppProperties.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class MvcConfig implements WebMvcConfigurer {
   Logger logger = LoggerFactory.getLogger(MvcConfig.class);
 
-  private final UploadProperties properties;
+  @Value("${spring.servlet.multipart.location}")
+  private String filePath;
+
+  @Value("${app.location.source-url}")
+  private String localSourceMapping;
 
   /**
-   * 用户头像本地映射
+   * 静态资源映射
    * @param registry /
    */
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    String path = properties.getSavePath();
-    logger.info("上传头像保存路径：{}", path);
-    registry.addResourceHandler(properties.getUploadPathPattern())
-      .addResourceLocations("file:" + path);
+    registry.addResourceHandler(localSourceMapping)
+      .addResourceLocations("file:" + filePath);
   }
 
   @Bean

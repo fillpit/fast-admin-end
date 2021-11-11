@@ -18,6 +18,6 @@ public class JpaCurrentUserConfig {
   /** 注入当前登陆用户名 */
   @Bean
   public AuditorAware<String> auditorProvider() {
-    return CurrentUser::currentUserName;
+    return CurrentUser::userName;
   }
 }

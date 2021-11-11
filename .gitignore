@@ -31,3 +31,5 @@
 /admin-user/target/
 /app/target/
 /app/upload/
+/file/
+/logs/

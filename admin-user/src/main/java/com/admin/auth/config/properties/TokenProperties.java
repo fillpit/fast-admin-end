@@ -1,9 +1,6 @@
 package com.admin.auth.config.properties;
 
-import com.admin.core.config.properties.UploadProperties;
-import com.admin.core.utils.PathUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.lang.Nullable;
 
 /**
  * @author fei

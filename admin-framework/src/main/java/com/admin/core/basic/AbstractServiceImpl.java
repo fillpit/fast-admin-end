@@ -1,17 +1,24 @@
 package com.admin.core.basic;
 
+import cn.hutool.core.util.ClassUtil;
 import com.admin.core.repository.BaseRepository;
 import com.admin.core.exception.AppException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +40,13 @@ public abstract class AbstractServiceImpl<T, ID extends Serializable> implements
   @Override
   @Transactional(rollbackFor = Exception.class)
   public T save(@Valid T entity) {
+    try {
+      Class<?> clazz = entity.getClass();
+      Field delFlag = clazz.getDeclaredField("delFlag");
+      delFlag.setAccessible(true);
+      delFlag.set(entity, false);
+    } catch (NoSuchFieldException | SecurityException | IllegalAccessException ex) {}
+
     return repository.save(entity);
   }
 
@@ -72,7 +86,27 @@ public abstract class AbstractServiceImpl<T, ID extends Serializable> implements
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void delete(T entity) {
-    repository.delete(entity);
+    Class<?> clazz = entity.getClass();
+    Field delFlag = null;
+    try {
+      // 有些表的数据是不能删除的，会设置一个删除标志
+      // 所以这里就预设了一个 删除字段, 如果表里有这个字段，删除的时候就会把数据的状态设置为已删除
+      // 没有这个字段就会自己把这条数据删除
+      delFlag = clazz.getDeclaredField("delFlag");
+      delFlag.setAccessible(true);
+      delFlag.set(entity, true);
+      // 更新状态
+      update(entity);
+    } catch (IllegalAccessException e) {
+      throw new AppException(
+          "该表【"
+              + clazz.getName()
+              + "】有删除字段，但类型["
+              + delFlag.getType().getSimpleName()
+              + "]不是 boolean");
+    } catch (NoSuchFieldException | SecurityException ex) {
+      repository.delete(entity);
+    }
   }
 
   @Override

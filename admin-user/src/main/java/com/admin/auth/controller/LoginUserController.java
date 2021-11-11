@@ -40,7 +40,7 @@ public class LoginUserController {
    */
   @PutMapping("me")
   public SysUserEntity updateByMe(@RequestBody SysUserDto dto) {
-    Long id = CurrentUser.currentUserId();
+    Long id = CurrentUser.userId();
     SysUserEntity sysUser = sysUserService.findById(id);
     BeanUtils.copyProperties(dto, sysUser, "enabled");
 
@@ -58,7 +58,7 @@ public class LoginUserController {
     @JsonParam @NotEmpty String oldPwd,
     @JsonParam @NotEmpty @Size(min = 6, max = 18)
       String newPwd) {
-    Long id = CurrentUser.currentUserId();
+    Long id = CurrentUser.userId();
     SysUserEntity sysUser = sysUserService.findById(id);
 
     // 验证旧密码
@@ -88,7 +88,7 @@ public class LoginUserController {
    */
   @GetMapping(value = "/user-info")
   public JwtUser getUserInfo() {
-    return CurrentUser.currentUser();
+    return CurrentUser.user();
   }
 
   /**
@@ -107,7 +107,7 @@ public class LoginUserController {
    */
   @PutMapping(value = "center")
   public void center(@Valid @RequestBody UpdateUserInfoDto dto){
-    SysUserEntity sysUser = sysUserService.findById(CurrentUser.currentUserId());
+    SysUserEntity sysUser = sysUserService.findById(CurrentUser.userId());
     dto.pathProperties(sysUser);
 
     loginUserService.updateCenter(sysUser);

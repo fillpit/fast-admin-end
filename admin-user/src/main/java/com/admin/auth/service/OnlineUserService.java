@@ -114,7 +114,7 @@ public class OnlineUserService {
    * @param token /
    */
   public void logout(String token) {
-    JwtUser jwtUser = CurrentUser.currentUser();
+    JwtUser jwtUser = CurrentUser.user();
 
     // 记录注销日志(异步)
     sysLoginInfoService.recordLoginInfo(
@@ -128,7 +128,7 @@ public class OnlineUserService {
    * @param token token
    */
   public void kickOut(String token) {
-    JwtUser jwtUser = CurrentUser.currentUser();
+    JwtUser jwtUser = CurrentUser.user();
 
     // 记录强制下线日志(异步)
     sysLoginInfoService.recordLoginInfo(
