@@ -3,13 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>fast-admin-end</artifactId>
-    <groupId>com.admin</groupId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>com.kenfei.admin</groupId>
+    <artifactId>admin-parent</artifactId>
+    <version>1.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>admin-bpmn</artifactId>
+  <version>1.0.0</version>
 
   <properties>
     <maven.compiler.source>8</maven.compiler.source>
@@ -18,10 +19,16 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.admin</groupId>
+      <groupId>com.kenfei.admin</groupId>
       <artifactId>admin-user</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>1.0.0</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.flowable</groupId>
       <artifactId>flowable-spring-boot-starter</artifactId>

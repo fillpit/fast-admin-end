@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <parent>
-    <artifactId>fast-admin-end</artifactId>
-    <groupId>com.admin</groupId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>com.kenfei.admin</groupId>
+    <artifactId>admin-parent</artifactId>
+    <version>1.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -24,9 +24,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.admin</groupId>
+      <groupId>com.kenfei.admin</groupId>
       <artifactId>admin-bpmn</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>1.0.0</version>
     </dependency>
 
     <dependency>
@@ -53,24 +53,29 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-jpa</artifactId>
-      <version>${querydsl.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-apt</artifactId>
-      <version>${querydsl.version}</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <build>
     <finalName>admin</finalName>
     <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <fork>true</fork>
+          <!--指定 spring boot 启动类 -->
+          <mainClass>com.kenfei.admin.Application</mainClass>
+          <!-- 解决找不到包的问题 -->
+          <classifier>exec</classifier>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <!-- Docker maven plugin -->
       <plugin>
         <groupId>com.spotify</groupId>

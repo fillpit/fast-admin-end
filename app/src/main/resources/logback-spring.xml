@@ -90,7 +90,7 @@
   </appender>
 
   <!-- 系统模块日志级别控制  -->
-  <logger name="com.admin" level="INFO" />
+  <logger name="com.kenfei.admin" level="INFO" />
   <!-- Spring日志级别控制  -->
   <logger name="org.springframework" level="WARN" />
 

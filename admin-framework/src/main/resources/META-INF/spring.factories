@@ -1,0 +1,13 @@
+# Auth config
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
+  com.kenfei.admin.core.config.CorsConfig,   \
+  com.kenfei.admin.core.config.MvcConfig,    \
+  com.kenfei.admin.core.config.JpaConfig,    \
+  com.kenfei.admin.core.config.FilterConfig,    \
+  com.kenfei.admin.core.config.LocalDateTimeSerializerConfig,   \
+  com.kenfei.admin.core.config.advices.ControllerExceptionAdvice,   \
+  com.kenfei.admin.core.config.advices.CustomerResponseBodyAdvice,   \
+  com.kenfei.admin.core.config.resolvers.CustomerArgumentResolver,   \
+  com.kenfei.admin.core.config.ValidatorConfig,   \
+  com.kenfei.admin.core.config.AspectConfig
