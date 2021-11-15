@@ -7,6 +7,8 @@ import com.kenfei.admin.user.service.SysJobsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,7 +19,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 /**
- * (SysJob)表控制层
+ * (SysJob) 岗位 表控制层
  *
  * @author kenfei
  * @since 2021-08-17 20:08:08
@@ -27,6 +29,14 @@ import java.util.*;
 @RequestMapping("jobs")
 public class SysJobsController extends AbstractController<SysJobsEntity, Long> {
   private final SysJobsService sysJobsService;
+  private static final ExampleMatcher EXAMPLE_MATCHER;
+
+  static {
+    EXAMPLE_MATCHER = ExampleMatcher
+      .matchingAll()
+      .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains())
+      ;
+  }
 
   @Autowired
   public SysJobsController(SysJobsService sysJobsService) {
@@ -48,11 +58,15 @@ public class SysJobsController extends AbstractController<SysJobsEntity, Long> {
 
   /**
    * 获取数据列表
-   * @return 角色集合
+   * @return 岗位集合
    */
   @GetMapping(value = "list")
-  public List<SysJobsEntity> index(Boolean enabled) {
-    return sysJobsService.findAll();
+  public List<SysJobsEntity> index(@RequestParam String name) {
+    SysJobsEntity entity = new SysJobsEntity();
+    entity.setName(name);
+    entity.setEnabled(true);
+
+    return sysJobsService.findAll(Example.of(entity, EXAMPLE_MATCHER));
   }
 
   /**
