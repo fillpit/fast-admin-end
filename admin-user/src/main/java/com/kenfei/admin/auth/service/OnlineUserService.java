@@ -42,7 +42,6 @@ public class OnlineUserService {
    * @param token key
    * @param request /
    */
-  @Async
   public void save(JwtUser jwtUser, String token, HttpServletRequest request) {
     String dept = Optional.ofNullable(jwtUser.getDept()).map(JwtUser.JwtDept::getName).orElse("");
     String ip = IpUtils.getIpAddr(request);
