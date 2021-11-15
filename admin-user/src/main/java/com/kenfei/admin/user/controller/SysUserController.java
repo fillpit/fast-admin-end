@@ -6,6 +6,7 @@ import com.kenfei.admin.user.entity.SysUserEntity;
 import com.kenfei.admin.user.service.SysUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * 用户接口层
@@ -34,6 +36,7 @@ public class SysUserController extends AbstractController<SysUserEntity, Long> {
     EXAMPLE_MATCHER = ExampleMatcher
       .matchingAll()
       .withMatcher("userName", ExampleMatcher.GenericPropertyMatchers.contains())
+      .withMatcher("nickName", ExampleMatcher.GenericPropertyMatchers.contains())
       .withMatcher("departmentCode", ExampleMatcher.GenericPropertyMatchers.contains())
       .withIgnorePaths("password");
   }
@@ -54,6 +57,18 @@ public class SysUserController extends AbstractController<SysUserEntity, Long> {
   public Page<SysUserEntity> index(String userName, Long deptId, @PageableDefault Pageable pageable) {
     return userService.index(userName, deptId, pageable);
   }
+
+  /**
+   * 查询用户列表
+   * @param dto 用户数据
+   * @return /
+   */
+  @GetMapping("list")
+  public List<SysUserEntity> list(SysUserDto dto) {
+    SysUserEntity entity = dto.convert(SysUserEntity.class);
+    return userService.findAll(Example.of(entity, EXAMPLE_MATCHER));
+  }
+
 
   /**
    * 检查用户名是否存在
