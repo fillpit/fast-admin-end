@@ -65,7 +65,7 @@ public class SysUserController extends AbstractController<SysUserEntity, Long> {
    * @return /
    */
   @GetMapping("list")
-  public List<SysUserEntity> list(@RequestParam String userName) {
+  public List<SysUserEntity> list(@RequestParam(required = false) String userName) {
     SysUserEntity entity = new SysUserEntity();
     entity.setUserName(userName);
     entity.setEnabled(true);

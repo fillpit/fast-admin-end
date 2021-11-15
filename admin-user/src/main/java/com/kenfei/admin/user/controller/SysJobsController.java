@@ -61,7 +61,7 @@ public class SysJobsController extends AbstractController<SysJobsEntity, Long> {
    * @return 岗位集合
    */
   @GetMapping(value = "list")
-  public List<SysJobsEntity> index(@RequestParam String name) {
+  public List<SysJobsEntity> index(@RequestParam(required = false) String name) {
     SysJobsEntity entity = new SysJobsEntity();
     entity.setName(name);
     entity.setEnabled(true);
