@@ -1,5 +1,6 @@
 package com.kenfei.admin.user.controller;
 
+import com.kenfei.admin.core.common.EnabledEnum;
 import com.kenfei.admin.core.common.base.AbstractController;
 import com.kenfei.admin.user.dto.SysUserDto;
 import com.kenfei.admin.user.entity.SysUserEntity;
@@ -60,12 +61,14 @@ public class SysUserController extends AbstractController<SysUserEntity, Long> {
 
   /**
    * 查询用户列表
-   * @param dto 用户数据
+   * @param userName 用户名称
    * @return /
    */
   @GetMapping("list")
-  public List<SysUserEntity> list(SysUserDto dto) {
-    SysUserEntity entity = dto.convert(SysUserEntity.class);
+  public List<SysUserEntity> list(@RequestParam String userName) {
+    SysUserEntity entity = new SysUserEntity();
+    entity.setUserName(userName);
+    entity.setEnabled(true);
     return userService.findAll(Example.of(entity, EXAMPLE_MATCHER));
   }
 
