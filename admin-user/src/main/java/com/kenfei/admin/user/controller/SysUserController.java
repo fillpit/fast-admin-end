@@ -106,8 +106,7 @@ public class SysUserController extends AbstractController<SysUserEntity, Long> {
   @PutMapping("{id}")
   public SysUserEntity update(@NotNull @PathVariable Long id, @RequestBody SysUserDto dto) {
     SysUserEntity sysUser = userService.findById(id);
-    BeanUtils.copyProperties(dto, sysUser);
 
-    return userService.update(sysUser);
+    return userService.update(dto.pathProperties(sysUser));
   }
 }

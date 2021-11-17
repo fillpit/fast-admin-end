@@ -47,8 +47,8 @@ public class SysUserDto implements DtoConvert<SysUserEntity> {
   private List<Long> roles;
 
   @Override
-  public SysUserEntity convert(Class<SysUserEntity> sysUserEntityClass) {
-    SysUserEntity entity = DtoConvert.super.convert(sysUserEntityClass);
+  public SysUserEntity convertProperties(SysUserEntity entity) {
+//    SysUserEntity entity = DtoConvert.super.convert(sysUserEntityClass);
     // 岗位
     entity.setJobs(this.jobs.stream().map(SysJobsEntity::new).collect(Collectors.toSet()));
     // 角色
