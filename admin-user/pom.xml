@@ -12,14 +12,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>admin-user</artifactId>
-  <version>1.0.9</version>
+  <version>1.0.10</version>
 
   <dependencies>
 
     <dependency>
       <groupId>com.kenfei.admin</groupId>
       <artifactId>admin-framework</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
     </dependency>
 
     <dependency>
