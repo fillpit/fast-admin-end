@@ -1,5 +1,6 @@
 package com.kenfei.admin.core.utils.json;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -15,8 +16,16 @@ import java.io.OutputStream;
  * @since 2020/10/26 9:17 上午
  */
 public class JSON {
-  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-  private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writerWithDefaultPrettyPrinter();
+  private static final ObjectMapper OBJECT_MAPPER;
+  private static final ObjectWriter OBJECT_WRITER;
+
+  static {
+    OBJECT_MAPPER = new ObjectMapper();
+    // 忽略不存在的字段
+    OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    OBJECT_WRITER = OBJECT_MAPPER.writerWithDefaultPrettyPrinter();
+  }
 
   public static void reade(File file, Object value) throws RuntimeException {
     try {
