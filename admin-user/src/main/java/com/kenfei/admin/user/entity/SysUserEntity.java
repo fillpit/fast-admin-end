@@ -29,7 +29,7 @@ public class SysUserEntity extends AbstractEntity implements Serializable {
   /** 性别 */
   @NotBlank private String gender;
   /** 密码. */
-  @NotBlank private String password;
+  private String password;
   /** 邮箱. */
   private String email;
   /** 状态. */
