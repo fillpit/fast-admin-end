@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  */
 @Data
 public class SysUserDto implements DtoConvert<SysUserEntity> {
-  private static final String DEFAULT_PASSWORD = "123456";
 
   /** 用户名. */
   @NotBlank(message = "用户名不能为空")
@@ -48,13 +47,10 @@ public class SysUserDto implements DtoConvert<SysUserEntity> {
 
   @Override
   public SysUserEntity convertProperties(SysUserEntity entity) {
-//    SysUserEntity entity = DtoConvert.super.convert(sysUserEntityClass);
     // 岗位
     entity.setJobs(this.jobs.stream().map(SysJobsEntity::new).collect(Collectors.toSet()));
     // 角色
     entity.setRoles(this.roles.stream().map(SysRoleEntity::new).collect(Collectors.toSet()));
-    // 默认密码
-    entity.setPassword(DEFAULT_PASSWORD);
     return entity;
   }
 }

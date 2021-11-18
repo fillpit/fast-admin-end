@@ -36,6 +36,7 @@ import java.util.Objects;
 @Validated
 @Transactional(rollbackFor = Exception.class)
 public class SysUserServiceImpl extends AbstractServiceImpl<SysUserEntity, Long> implements SysUserService {
+  private static final String DEFAULT_PASSWORD = "123456";
 
   private final SysUserRepository userRepository;
   private final SysDeptService sysDeptService;
@@ -52,7 +53,7 @@ public class SysUserServiceImpl extends AbstractServiceImpl<SysUserEntity, Long>
   public SysUserEntity save(@Valid SysUserEntity entity) {
     // 加密用户密码
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    String encode = encoder.encode(entity.getPassword());
+    String encode = encoder.encode(DEFAULT_PASSWORD);
     entity.setPassword(encode);
 
     // 检查用户名是否存在
