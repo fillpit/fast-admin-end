@@ -66,7 +66,16 @@ public class MvcConfig implements WebMvcConfigurer {
    */
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler(localSourceMapping)
+    String mapping = localSourceMapping;
+    if (!StringUtils.hasLength(mapping)) {
+      mapping = "/file";
+    }
+    mapping = mapping.replace("*", "");
+    if (mapping.lastIndexOf("/") == 1) {
+      mapping = mapping.substring(0, mapping.length() - 1 ).concat("/**");
+    }
+
+    registry.addResourceHandler(mapping)
       .addResourceLocations("file:" + filePath);
   }
 

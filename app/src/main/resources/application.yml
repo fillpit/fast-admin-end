@@ -4,7 +4,7 @@ app:
   redis-key-prefix: fast_admin_end_
   # 本地资源访问映射
   location:
-    source-url: /file/**
+    source-url: /file/
   jwt:
     header: "Access-Token"
     secret: ${JWT_SECRET:mySecret}

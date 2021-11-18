@@ -27,6 +27,9 @@ public class LoginUserService {
   @Value("${spring.servlet.multipart.location}")
   private String filePath;
 
+  @Value("${app.location.source-url}")
+  private String localSourceMapping;
+
   private static final String FOLDER = "avatar/";
 
   public LoginUserService(SysMenuService sysMenuService, SysUserService sysUserService) {
@@ -71,14 +74,14 @@ public class LoginUserService {
     }
     SysUserEntity user = sysUserService.findById(CurrentUser.userId());
     String oldPath = user.getAvatar();
-    String fileName = FileUtils.upload(multipartFile, getSavePath());
+    String fileName = FileUtils.upload(multipartFile, getAvatarSavePath());
     user.setAvatar(Objects.requireNonNull(fileName));
     sysUserService.update(user);
     if (StringUtils.hasLength(oldPath)) {
-      FileUtils.del(getSavePath() + oldPath);
+      FileUtils.del(getAvatarSavePath() + oldPath);
     }
 
-    return "upload/" + fileName;
+    return getAvatarRequestPath() + fileName;
   }
 
   public void updateCenter(SysUserEntity entity) {
@@ -86,10 +89,18 @@ public class LoginUserService {
   }
 
   /**
+   * 获取头像访问路径
+   * @return /
+   */
+  private String getAvatarRequestPath() {
+    return localSourceMapping + FOLDER;
+  }
+
+  /**
    * 获取头像保存的路径
    * @return
    */
-  private String getSavePath() {
+  private String getAvatarSavePath() {
     return filePath + FOLDER;
   }
 }
