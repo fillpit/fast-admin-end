@@ -2,6 +2,7 @@ package com.kenfei.admin.user.controller;
 
 import com.kenfei.admin.core.common.EnabledEnum;
 import com.kenfei.admin.core.common.base.AbstractController;
+import com.kenfei.admin.core.config.resolvers.JsonParam;
 import com.kenfei.admin.user.dto.SysUserDto;
 import com.kenfei.admin.user.entity.SysUserEntity;
 import com.kenfei.admin.user.service.SysUserService;
@@ -109,4 +110,19 @@ public class SysUserController extends AbstractController<SysUserEntity, Long> {
 
     return userService.update(dto.pathProperties(sysUser));
   }
+
+  /**
+   * 更新用户状态
+   * @param id 用户ID
+   * @param state 状态
+   * @return /
+   */
+  @PutMapping("{id}/state")
+  public SysUserEntity updateState(@NotNull @PathVariable Long id, @JsonParam Boolean state) {
+    SysUserEntity sysUser = userService.findById(id);
+    sysUser.setEnabled(state);
+
+    return userService.update(sysUser);
+  }
 }
+
