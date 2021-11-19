@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -54,7 +55,7 @@ public class ControllerExceptionAdvice {
   @ExceptionHandler(ParamNotValidException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public Response paramNotValidExceptionHandler(ParamNotValidException ex) {
-    ex.setErrorCode(400);
+    ex.setErrorCode(HttpStatus.BAD_REQUEST.value());
     return appException(ex);
   }
 
@@ -93,6 +94,18 @@ public class ControllerExceptionAdvice {
   @ExceptionHandler(BindException.class)
   public Response bindException(BindException ex) {
     return paramNotValidExceptionHandler(new ParamNotValidException(ex));
+  }
+
+  /**
+   * 不支持的请求方式
+   * @param ex
+   * @return
+   */
+  @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public Response httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+    AppException appException = new AppException(HttpStatus.METHOD_NOT_ALLOWED.value(), "不支持的请求方式");
+    return appException(appException);
   }
 
   /**
