@@ -11,6 +11,7 @@ import com.kenfei.admin.user.service.SysMenuService;
 import com.kenfei.admin.user.service.SysUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
@@ -75,13 +76,16 @@ public class LoginUserService {
     SysUserEntity user = sysUserService.findById(CurrentUser.userId());
     String oldPath = user.getAvatar();
     String fileName = FileUtils.upload(multipartFile, getAvatarSavePath());
-    user.setAvatar(Objects.requireNonNull(fileName));
+    Assert.notNull(fileName, "文件保存失败");
+
+    String requestPath = getAvatarRequestPath() + fileName;
+    user.setAvatar(requestPath);
     sysUserService.update(user);
     if (StringUtils.hasLength(oldPath)) {
       FileUtils.del(getAvatarSavePath() + oldPath);
     }
 
-    return getAvatarRequestPath() + fileName;
+    return requestPath;
   }
 
   public void updateCenter(SysUserEntity entity) {

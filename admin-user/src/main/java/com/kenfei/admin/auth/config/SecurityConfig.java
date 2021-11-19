@@ -24,6 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -64,10 +65,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    */
   @Override
   public void configure(WebSecurity web) {
+    String mapping = localSourceMapping;
+    if (!StringUtils.hasLength(mapping)) {
+      mapping = "/file";
+    }
+    mapping = mapping.replace("*", "");
+    if (mapping.lastIndexOf("/") == 1) {
+      mapping = mapping.substring(0, mapping.length() - 1 ).concat("/**");
+    }
+
     web.ignoring()
         .antMatchers(HttpMethod.GET, "/index.html", "/static/**")
         .mvcMatchers("/api/auth/**")
-        .mvcMatchers(localSourceMapping);
+        .mvcMatchers(mapping);
   }
 
   @Override
