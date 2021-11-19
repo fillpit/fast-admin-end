@@ -69,9 +69,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     if (!StringUtils.hasLength(mapping)) {
       mapping = "/file";
     }
-    mapping = mapping.replace("*", "");
-    if (mapping.lastIndexOf("/") == 1) {
-      mapping = mapping.substring(0, mapping.length() - 1 ).concat("/**");
+
+    mapping = mapping.replaceAll("\\*", "");
+    if (mapping.endsWith("/")) {
+      mapping = mapping.concat("**");
+    } else {
+      mapping = mapping.concat("/**");
     }
 
     web.ignoring()
