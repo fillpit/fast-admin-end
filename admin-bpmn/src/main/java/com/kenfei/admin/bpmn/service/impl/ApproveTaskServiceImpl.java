@@ -1,6 +1,6 @@
 package com.kenfei.admin.bpmn.service.impl;
 
-import com.kenfei.admin.auth.model.CurrentUser;
+import com.kenfei.admin.modules.auth.model.CurrentUser;
 import com.kenfei.admin.bpmn.entity.ApproveTaskNodeEntity;
 import com.kenfei.admin.bpmn.flowable.ActInstance;
 import com.kenfei.admin.bpmn.flowable.ActTask;

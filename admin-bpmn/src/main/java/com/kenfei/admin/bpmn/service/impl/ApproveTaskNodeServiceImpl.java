@@ -1,7 +1,7 @@
 package com.kenfei.admin.bpmn.service.impl;
 
-import com.kenfei.admin.auth.config.security.JwtUser;
-import com.kenfei.admin.auth.model.CurrentUser;
+import com.kenfei.admin.modules.auth.config.security.JwtUser;
+import com.kenfei.admin.modules.auth.model.CurrentUser;
 import com.kenfei.admin.bpmn.common.emun.ApproveStateEnum;
 import com.kenfei.admin.bpmn.flowable.ActTaskQuery;
 import com.kenfei.admin.core.common.base.AbstractServiceImpl;
