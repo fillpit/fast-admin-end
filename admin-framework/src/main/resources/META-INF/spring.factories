@@ -10,4 +10,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
   com.kenfei.admin.core.config.advices.CustomerResponseBodyAdvice,   \
   com.kenfei.admin.core.config.resolvers.CustomerArgumentResolver,   \
   com.kenfei.admin.core.config.ValidatorConfig,   \
-  com.kenfei.admin.core.config.AspectConfig
+  com.kenfei.admin.core.config.AspectConfig,     \
+  com.kenfei.admin.core.config.BeanConfig

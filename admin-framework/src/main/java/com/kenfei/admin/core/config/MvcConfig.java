@@ -2,6 +2,7 @@ package com.kenfei.admin.core.config;
 
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.kenfei.admin.core.common.AppProperties;
+import com.kenfei.admin.core.common.UploadProperties;
 import com.kenfei.admin.core.common.base.BaseEnum;
 import com.kenfei.admin.core.common.exception.DateConverterException;
 import com.kenfei.admin.core.config.resolvers.CustomerArgumentResolver;
@@ -9,6 +10,7 @@ import com.kenfei.admin.core.utils.SpringContextUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -40,19 +42,18 @@ import java.util.*;
  * @date 2017/10/12
  */
 @EnableAsync
-@RequiredArgsConstructor
 @Configuration(value = "coreConfig", proxyBeanMethods = false)
 @EnableConfigurationProperties({AppProperties.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class MvcConfig implements WebMvcConfigurer {
   Logger logger = LoggerFactory.getLogger(MvcConfig.class);
 
-  @Value("${spring.servlet.multipart.location}")
-  private String filePath;
+  private final UploadProperties uploadProperties;
 
-  @Value("${app.location.source-url}")
-  private String localSourceMapping;
-
+  @Autowired
+  public MvcConfig(UploadProperties uploadProperties) {
+    this.uploadProperties = uploadProperties;
+  }
 
   @Bean
   public SpringContextUtils springContextUtils(){
@@ -66,19 +67,8 @@ public class MvcConfig implements WebMvcConfigurer {
    */
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    String mapping = localSourceMapping;
-    if (!StringUtils.hasLength(mapping)) {
-      mapping = "/file";
-    }
-    mapping = mapping.replaceAll("\\*", "");
-    if (mapping.endsWith("/")) {
-      mapping = mapping.concat("**");
-    } else {
-      mapping = mapping.concat("/**");
-    }
-
-    registry.addResourceHandler(mapping)
-      .addResourceLocations("file:" + filePath);
+    registry.addResourceHandler(uploadProperties.getMappingPath())
+      .addResourceLocations("file:" + uploadProperties.getSavePath());
   }
 
   @Bean

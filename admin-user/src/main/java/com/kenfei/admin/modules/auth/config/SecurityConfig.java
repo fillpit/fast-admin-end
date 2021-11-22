@@ -1,5 +1,6 @@
 package com.kenfei.admin.modules.auth.config;
 
+import com.kenfei.admin.core.common.UploadProperties;
 import com.kenfei.admin.modules.auth.config.properties.TokenProperties;
 import com.kenfei.admin.modules.auth.config.security.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired private UrlAccessDecisionManager urlAccessDecisionManager;
   @Autowired private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
+  @Autowired private UploadProperties uploadProperties;
+
   @Value("${app.location.source-url}")
   private String localSourceMapping;
 
@@ -65,22 +68,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    */
   @Override
   public void configure(WebSecurity web) {
-    String mapping = localSourceMapping;
-    if (!StringUtils.hasLength(mapping)) {
-      mapping = "/file";
-    }
-
-    mapping = mapping.replaceAll("\\*", "");
-    if (mapping.endsWith("/")) {
-      mapping = mapping.concat("**");
-    } else {
-      mapping = mapping.concat("/**");
-    }
-
     web.ignoring()
         .antMatchers(HttpMethod.GET, "/index.html", "/static/**")
         .mvcMatchers("/api/auth/**")
-        .mvcMatchers(mapping);
+        .mvcMatchers(uploadProperties.getMappingPath());
   }
 
   @Override

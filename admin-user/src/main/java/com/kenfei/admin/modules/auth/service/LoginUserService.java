@@ -1,5 +1,6 @@
 package com.kenfei.admin.modules.auth.service;
 
+import com.kenfei.admin.core.common.UploadProperties;
 import com.kenfei.admin.modules.auth.config.security.JwtUser;
 import com.kenfei.admin.modules.auth.model.CurrentUser;
 import com.kenfei.admin.core.common.exception.AppException;
@@ -24,18 +25,14 @@ import java.util.*;
 public class LoginUserService {
   private final SysMenuService sysMenuService;
   private final SysUserService sysUserService;
-
-  @Value("${spring.servlet.multipart.location}")
-  private String filePath;
-
-  @Value("${app.location.source-url}")
-  private String localSourceMapping;
+  private final UploadProperties uploadProperties;
 
   private static final String FOLDER = "avatar/";
 
-  public LoginUserService(SysMenuService sysMenuService, SysUserService sysUserService) {
+  public LoginUserService(SysMenuService sysMenuService, SysUserService sysUserService, UploadProperties uploadProperties) {
     this.sysMenuService = sysMenuService;
     this.sysUserService = sysUserService;
+    this.uploadProperties = uploadProperties;
   }
 
   /**
@@ -75,14 +72,14 @@ public class LoginUserService {
     }
     SysUserEntity user = sysUserService.findById(CurrentUser.userId());
     String oldPath = user.getAvatar();
-    String fileName = FileUtils.upload(multipartFile, getAvatarSavePath());
+    String fileName = FileUtils.upload(multipartFile, uploadProperties.getSavePath(FOLDER));
     Assert.notNull(fileName, "文件保存失败");
 
-    String requestPath = getAvatarRequestPath() + fileName;
+    String requestPath = uploadProperties.getRequestPath(FOLDER) + fileName;
     user.setAvatar(requestPath);
     sysUserService.update(user);
     if (StringUtils.hasLength(oldPath)) {
-      FileUtils.del(getAvatarSavePath() + oldPath);
+      FileUtils.del(uploadProperties.getSavePath(FOLDER) + oldPath);
     }
 
     return requestPath;
@@ -92,20 +89,5 @@ public class LoginUserService {
     sysUserService.update(entity);
   }
 
-  /**
-   * 获取头像访问路径
-   * @return /
-   */
-  private String getAvatarRequestPath() {
-    return localSourceMapping + FOLDER;
-  }
-
-  /**
-   * 获取头像保存的路径
-   * @return
-   */
-  private String getAvatarSavePath() {
-    return filePath + FOLDER;
-  }
 }
 
