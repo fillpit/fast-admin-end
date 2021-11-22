@@ -20,7 +20,7 @@ import java.util.*;
 @Table(name = "sys_user", schema = "fastAdmin")
 public class SysUserEntity extends AbstractEntity implements Serializable {
   private static final long serialVersionUID = -2028298888228036L;
-  /** 主键列*/
+  /** 主键列 */
   private Long id;
   /** 用户名. */
   @NotBlank private String userName;
@@ -48,8 +48,14 @@ public class SysUserEntity extends AbstractEntity implements Serializable {
   private Set<SysJobsEntity> jobs;
   /** 用户部门（显示用） */
   private SysDeptEntity dept;
-  /** 部门ID（更新用）*/
+  /** 部门ID（更新用） */
   private Long deptId;
+  /** 工号 */
+  private String code;
+  /** 公司（显示用） */
+  private SysOrgEntity org;
+  /** 公司ID（更新用） */
+  private Long orgId;
 
   @Id
   @Column(name = "id")
@@ -148,8 +154,6 @@ public class SysUserEntity extends AbstractEntity implements Serializable {
     this.roles = roles;
   }
 
-
-
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "dept_id", updatable = false, insertable = false)
   public SysDeptEntity getDept() {
@@ -201,14 +205,45 @@ public class SysUserEntity extends AbstractEntity implements Serializable {
   }
 
   @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "sys_users_jobs",
-    joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},
-    inverseJoinColumns = {@JoinColumn(name = "job_id",referencedColumnName = "id")})
+  @JoinTable(
+      name = "sys_users_jobs",
+      joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "job_id", referencedColumnName = "id")})
   public Set<SysJobsEntity> getJobs() {
     return jobs;
   }
 
   public void setJobs(Set<SysJobsEntity> jobs) {
     this.jobs = jobs;
+  }
+
+  @Basic
+  @Column(name = "code")
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "org_id", updatable = false, insertable = false)
+  public SysOrgEntity getOrg() {
+    return org;
+  }
+
+  public void setOrg(SysOrgEntity org) {
+    this.org = org;
+  }
+
+  @Basic
+  @Column(name = "org_id")
+  public Long getOrgId() {
+    return orgId;
+  }
+
+  public void setOrgId(Long orgId) {
+    this.orgId = orgId;
   }
 }

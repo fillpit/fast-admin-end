@@ -24,9 +24,11 @@ public class SysUserDto implements DtoConvert<SysUserEntity> {
   private String userName;
   /** 昵称 */
   private String nickName;
+  /** 工号 */
+  @NotBlank private String code;
   /** 手机号码. */
   @NotBlank
-  @Pattern(regexp="^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$", message="手机号格式不正确")
+  @Pattern(regexp = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$", message = "手机号格式不正确")
   private String phone;
   /** email. */
   private String email;
@@ -36,14 +38,14 @@ public class SysUserDto implements DtoConvert<SysUserEntity> {
   private String gender;
   /** 用户状态. */
   @NotNull private Boolean enabled;
+  /** 公司ID */
+  @NotNull private Long orgId;
   /** 部门 */
-  private Long deptId;
+  @NotNull private Long deptId;
   /** 岗位 */
-  @NotEmpty
-  private List<Long> jobs;
+  @NotEmpty private List<Long> jobs;
   /** 角色 */
-  @NotEmpty
-  private List<Long> roles;
+  @NotEmpty private List<Long> roles;
 
   @Override
   public SysUserEntity convertProperties(SysUserEntity entity) {
