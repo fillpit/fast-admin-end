@@ -1,11 +1,13 @@
 package com.kenfei.admin.modules.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kenfei.admin.core.common.base.AbstractEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * (SysOrg)实体类
@@ -36,6 +38,12 @@ public class SysOrgEntity extends AbstractEntity implements Serializable {
   private Integer subCount;
 
   private List<SysOrgEntity> children;
+
+  public SysOrgEntity(){}
+
+  public SysOrgEntity(Long id) {
+    this.id = id;
+  }
 
   @Id
   @Column(name = "id")
@@ -136,5 +144,18 @@ public class SysOrgEntity extends AbstractEntity implements Serializable {
 
   public void setChildren(List<SysOrgEntity> children) {
     this.children = children;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof SysOrgEntity)) return false;
+    SysOrgEntity that = (SysOrgEntity) o;
+    return Objects.equals(id, that.id) && Objects.equals(deptSort, that.deptSort) && Objects.equals(enabled, that.enabled) && Objects.equals(code, that.code) && Objects.equals(name, that.name) && Objects.equals(shortName, that.shortName) && Objects.equals(descr, that.descr) && Objects.equals(parentId, that.parentId) && Objects.equals(subCount, that.subCount) && Objects.equals(children, that.children);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, deptSort, enabled, code, name, shortName, descr, parentId, subCount, children);
   }
 }

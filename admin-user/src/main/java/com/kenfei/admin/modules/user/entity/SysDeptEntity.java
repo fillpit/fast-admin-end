@@ -25,16 +25,16 @@ public class SysDeptEntity extends AbstractEntity implements Serializable {
   private Long id;
   /** 角色 */
   private Set<SysRoleEntity> roles;
+  /** 组织 */
+  private Set<SysOrgEntity> orgs;
   /** 排序 */
   private Integer deptSort;
   /** 部门名称 */
   @NotBlank private String name;
   /** 是否启用 */
   @NotNull private Boolean enabled;
-
   /** 上级部门 */
   private Long parentId;
-
   /** 子节点的数量 */
   private Integer subCount;
 
@@ -66,6 +66,16 @@ public class SysDeptEntity extends AbstractEntity implements Serializable {
 
   public void setRoles(Set<SysRoleEntity> roles) {
     this.roles = roles;
+  }
+
+  @OneToMany(mappedBy = "id", fetch = FetchType.EAGER)
+  @JoinColumn(name = "id", referencedColumnName = "org_id")
+  public Set<SysOrgEntity> getOrgs() {
+    return orgs;
+  }
+
+  public void setOrgs(Set<SysOrgEntity> orgs) {
+    this.orgs = orgs;
   }
 
   @Column(name = "dept_sort")

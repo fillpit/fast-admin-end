@@ -3,6 +3,7 @@ package com.kenfei.admin.modules.user.service.impl;
 import com.kenfei.admin.core.common.base.AbstractServiceImpl;
 import com.kenfei.admin.core.common.exception.AppException;
 import com.kenfei.admin.modules.user.entity.SysDeptEntity;
+import com.kenfei.admin.modules.user.entity.SysOrgEntity;
 import com.kenfei.admin.modules.user.repository.SysDeptRepository;
 import com.kenfei.admin.modules.user.service.SysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.persistence.criteria.Predicate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -115,6 +118,20 @@ public class SysDeptServiceImpl extends AbstractServiceImpl<SysDeptEntity, Long>
   @Override
   public List<SysDeptEntity> buildTree(List<SysDeptEntity> entitys) {
     return tree(null, entitys);
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void grantOrg(List<Long> deptIds, List<Long> orgIds) {
+    for (Long deptId : deptIds) {
+      SysDeptEntity deptEntity = findById(deptId);
+      Assert.notNull(deptEntity, "无效部门ID[" + deptId + "]");
+      Set<SysOrgEntity> orgs =
+          orgIds.stream().map(SysOrgEntity::new).collect(Collectors.toSet());
+
+      deptEntity.setOrgs(orgs);
+      this.update(deptEntity);
+    }
   }
 
   private List<SysDeptEntity> tree(Long parentId, List<SysDeptEntity> menus) {

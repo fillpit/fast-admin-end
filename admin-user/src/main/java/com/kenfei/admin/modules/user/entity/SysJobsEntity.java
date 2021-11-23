@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * 岗位信息表
@@ -27,6 +28,10 @@ public class SysJobsEntity extends AbstractEntity implements Serializable {
   /** 是否启用 */
   @NotNull
   private Boolean enabled;
+  /**
+   *  组织
+   */
+  private Set<SysOrgEntity> orgs;
 
   public SysJobsEntity() {}
   public SysJobsEntity(Long id) {
@@ -72,6 +77,17 @@ public class SysJobsEntity extends AbstractEntity implements Serializable {
 
   public void setEnabled(Boolean enabled) {
     this.enabled = enabled;
+  }
+
+  @OneToMany(mappedBy = "id", fetch = FetchType.EAGER)
+  @Column(name = "org_id", scale = 22)
+  @JoinColumn(name = "id", referencedColumnName = "org_id")
+  public Set<SysOrgEntity> getOrgs() {
+    return orgs;
+  }
+
+  public void setOrgs(Set<SysOrgEntity> orgs) {
+    this.orgs = orgs;
   }
 
   @Override

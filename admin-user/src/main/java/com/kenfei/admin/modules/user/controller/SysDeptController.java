@@ -1,6 +1,7 @@
 package com.kenfei.admin.modules.user.controller;
 
 import com.kenfei.admin.core.common.base.AbstractController;
+import com.kenfei.admin.core.config.resolvers.JsonParam;
 import com.kenfei.admin.modules.user.entity.SysDeptEntity;
 import com.kenfei.admin.modules.user.dto.SysDeptDto;
 import com.kenfei.admin.modules.user.service.SysDeptService;
@@ -70,6 +71,17 @@ public class SysDeptController extends AbstractController<SysDeptEntity, Long> {
     }
     return sysDeptService.findByParentId(null);
   }
+
+  /**
+   * 分配到公司
+   * @param deptIds 部门ID
+   * @param orgIds 公司ID
+   */
+  public void grantOrg(@NotEmpty @JsonParam List<Long> deptIds, @JsonParam List<Long> orgIds) {
+
+  }
+
+
    /**
    * 保存.
    *

@@ -5,6 +5,7 @@ import com.kenfei.admin.modules.user.entity.SysDeptEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
@@ -57,4 +58,11 @@ public interface SysDeptService extends InterfaceService<SysDeptEntity, Long> {
    * @return /
    */
   List<SysDeptEntity> buildTree(List<SysDeptEntity> entitys);
+
+  /**
+   * 分配部门到组织
+   * @param deptIds 部门ID
+   * @param orgIds 公司ID
+   */
+  void grantOrg(@NotEmpty List<Long> deptIds, List<Long> orgIds);
 }
