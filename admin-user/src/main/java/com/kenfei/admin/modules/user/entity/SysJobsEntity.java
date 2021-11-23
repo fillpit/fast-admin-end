@@ -79,8 +79,7 @@ public class SysJobsEntity extends AbstractEntity implements Serializable {
     this.enabled = enabled;
   }
 
-  @OneToMany(mappedBy = "id", fetch = FetchType.EAGER)
-  @Column(name = "org_id", scale = 22)
+  @OneToMany(fetch = FetchType.EAGER)
   @JoinColumn(name = "id", referencedColumnName = "org_id")
   public Set<SysOrgEntity> getOrgs() {
     return orgs;

@@ -68,7 +68,7 @@ public class SysDeptEntity extends AbstractEntity implements Serializable {
     this.roles = roles;
   }
 
-  @OneToMany(mappedBy = "id", fetch = FetchType.EAGER)
+  @OneToMany(fetch = FetchType.EAGER)
   @JoinColumn(name = "id", referencedColumnName = "org_id")
   public Set<SysOrgEntity> getOrgs() {
     return orgs;

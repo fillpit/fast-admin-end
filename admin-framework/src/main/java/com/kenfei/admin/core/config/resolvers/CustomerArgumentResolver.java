@@ -1,7 +1,11 @@
 package com.kenfei.admin.core.config.resolvers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.kenfei.admin.core.common.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -13,6 +17,13 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -27,7 +38,7 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
 
   private static final String CONTENT_TYPE = "application/json";
   private static final String JSON_BODY_ATTRIBUTE = "JSON_REQUEST_BODY";
-  private ObjectMapper om = new ObjectMapper();
+  private ObjectMapper mapper = new ObjectMapper();
 
   /**
    * 处理过滤规则.
@@ -54,12 +65,11 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
       MethodParameter methodParameter,
       ModelAndViewContainer modelAndViewContainer,
       NativeWebRequest nativeWebRequest,
-      WebDataBinderFactory webDataBinderFactory)
-      throws Exception {
+      WebDataBinderFactory webDataBinderFactory) throws JsonProcessingException {
 
     // content-type 不是json的不处理
     HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
-    if (!request.getContentType().contains(CONTENT_TYPE)) {
+    if (Objects.isNull(request) || !request.getContentType().contains(CONTENT_TYPE)) {
       throw new AppException(
           "Request content types '" + request.getContentType() + "' not supported");
     }
@@ -67,10 +77,23 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
     // 从 body 中获取参数
     String parameterName = methodParameter.getParameterName();
     String body = getRequestBody(nativeWebRequest);
-    JsonNode rootNode = om.readTree(body);
+    JsonNode rootNode = mapper.readTree(body);
     JsonNode node = rootNode.path(parameterName);
 
-    return om.readValue(node.toString(), methodParameter.getParameterType());
+    // 接受复杂的参数类型(比如 List<?>)
+    ParameterizedType parameterType = (ParameterizedType)methodParameter.getGenericParameterType();
+    Type parametrized = parameterType.getRawType();
+    Type[] parameterClasses = parameterType.getActualTypeArguments();
+
+    JavaType javaType = getCollectionType(parametrized.getClass(), Arrays.stream(parameterClasses).map(Type::getClass).distinct().toArray(Class[]::new));
+
+    // 如果没传指定的参数就返回 null 而不是抛出异常
+    try{
+      return mapper.readValue(node.toString(), javaType);
+    } catch (MismatchedInputException ex) {
+      return null;
+    }
+
   }
 
   private String getRequestBody(NativeWebRequest webRequest) {
@@ -87,5 +110,24 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
       }
     }
     return jsonBody;
+  }
+
+  /**   element
+
+   * 获取泛型的Collection Type
+
+   * @param collectionClass 泛型的Collection
+
+   * @param elementClasses 元素类
+
+   * @return JavaType Java类型
+
+   * @since 1.0
+
+   */
+
+  public JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
+    return mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
+
   }
 }

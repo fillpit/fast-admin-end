@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.kenfei.admin</groupId>
       <artifactId>admin-user</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.21</version>
     </dependency>
 
     <dependency>
