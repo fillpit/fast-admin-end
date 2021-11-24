@@ -17,8 +17,6 @@
   <modules>
     <module>app</module>
     <module>admin-framework</module>
-    <module>admin-user</module>
-    <module>admin-bpmn</module>
     <module>admin-parent</module>
   </modules>
 

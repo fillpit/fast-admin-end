@@ -23,7 +23,7 @@ server:
 spring:
   # 项目环境配置
   profiles:
-    active: @profiles.active@ # 这个变量的值取决于 maven 中的环境变量的值
+    active: dev  # 这个变量的值取决于 maven 中的环境变量的值 @profiles.active@
   devtools:
     restart:
       enabled: true

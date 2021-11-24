@@ -6,6 +6,7 @@
     <groupId>com.kenfei.admin</groupId>
     <artifactId>admin-parent</artifactId>
     <version>1.0.0</version>
+    <relativePath />
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -25,8 +26,8 @@
   <dependencies>
     <dependency>
       <groupId>com.kenfei.admin</groupId>
-      <artifactId>admin-bpmn</artifactId>
-      <version>1.0.0</version>
+      <artifactId>admin-framework</artifactId>
+      <version>1.0.7</version>
     </dependency>
 
     <dependency>
@@ -52,6 +53,16 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+
+    <!--swagger依赖-->
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
     </dependency>
   </dependencies>
 

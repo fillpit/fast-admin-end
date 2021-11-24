@@ -22,7 +22,7 @@ import java.util.List;
 public class JsonTest {
 
   @Test
-  public void test1() throws IOException {
+  public void test() throws IOException {
     String json = "{\"TEST_A\": \"fei\", \"TEST_B\": \"123\"}";
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -32,12 +32,22 @@ public class JsonTest {
   }
 
   @Test
-  public void test2() throws IOException {
-    String json = "{\"TEST_A\": \"fei\", \"TEST_B\": \"123\"}";
+  public void test1() throws IOException {
 
     ObjectMapper objectMapper = new ObjectMapper();
-    JavaType javaType = getCollectionType(ArrayList.class, Long.class);
-    List<Long> t = objectMapper.readValue("", javaType);
+    List<Long> t =
+      objectMapper.readValue("[1, 2, 3]", new TypeReference<List<Long>>(){});
+
+    log.info("读取结果: ==== {}", t.toString());
+  }
+
+  @Test
+  public void test2() throws IOException {
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    JavaType javaType =
+      objectMapper.getTypeFactory().constructParametricType(List.class, Long.class);
+    List<Long> t = objectMapper.readValue("[1, 2, 3]", javaType);
 
     log.info("读取结果: ==== {}", t.toString());
   }
