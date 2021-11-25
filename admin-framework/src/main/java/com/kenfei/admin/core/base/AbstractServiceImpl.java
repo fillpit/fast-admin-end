@@ -1,6 +1,6 @@
-package com.kenfei.admin.core.common.base;
+package com.kenfei.admin.core.base;
 
-import com.kenfei.admin.core.common.exception.AppException;
+import com.kenfei.admin.core.exception.AppException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

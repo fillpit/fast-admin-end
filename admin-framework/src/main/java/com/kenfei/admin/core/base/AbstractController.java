@@ -1,4 +1,4 @@
-package com.kenfei.admin.core.common.base;
+package com.kenfei.admin.core.base;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

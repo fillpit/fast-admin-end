@@ -1,7 +1,7 @@
-package com.kenfei.admin.core.common.exception;
+package com.kenfei.admin.core.exception;
 
 
-import com.kenfei.admin.core.common.base.BaseEnum;
+import com.kenfei.admin.core.base.BaseEnum;
 
 /**
  * 异常错误编码

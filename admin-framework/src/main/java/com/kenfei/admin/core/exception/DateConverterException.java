@@ -1,4 +1,4 @@
-package com.kenfei.admin.core.common.exception;
+package com.kenfei.admin.core.exception;
 
 /**
  * 时间转换异常

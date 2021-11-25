@@ -1,7 +1,7 @@
 package com.kenfei.admin.core.common;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.kenfei.admin.core.common.base.BaseEnum;
+import com.kenfei.admin.core.base.BaseEnum;
 
 /**
  * 有效标示枚举类

@@ -1,6 +1,6 @@
 package com.kenfei.admin.core.config.advices;
 
-import com.kenfei.admin.core.common.base.Response;
+import com.kenfei.admin.core.base.Response;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

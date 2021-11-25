@@ -1,4 +1,4 @@
-package com.kenfei.admin.core.common.exception;
+package com.kenfei.admin.core.exception;
 
 /**
  * 用户没有初始化 (401)

@@ -1,4 +1,4 @@
-package com.kenfei.admin.core.common.exception;
+package com.kenfei.admin.core.exception;
 
 /**
  * 自定义异常基类

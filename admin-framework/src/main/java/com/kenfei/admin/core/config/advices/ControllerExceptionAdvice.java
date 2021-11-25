@@ -1,8 +1,8 @@
 package com.kenfei.admin.core.config.advices;
 
-import com.kenfei.admin.core.common.base.Response;
-import com.kenfei.admin.core.common.exception.AppException;
-import com.kenfei.admin.core.common.exception.ParamNotValidException;
+import com.kenfei.admin.core.base.Response;
+import com.kenfei.admin.core.exception.AppException;
+import com.kenfei.admin.core.exception.ParamNotValidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

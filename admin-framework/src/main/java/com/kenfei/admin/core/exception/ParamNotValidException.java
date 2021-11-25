@@ -1,4 +1,4 @@
-package com.kenfei.admin.core.common.exception;
+package com.kenfei.admin.core.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
