@@ -1,5 +1,6 @@
 package com.kenfei.admin.core.jpa;
 
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.*;
@@ -45,6 +46,11 @@ public class SimpleExpression implements Criterion {
     } else {
       expression = root.get(fieldName);
     }
+
+    if (ObjectUtils.isEmpty(value)) {
+      this.operator = Criterion.Operator.IS_NULL;
+    }
+
     switch (operator) {
       case EQ:
         return builder.equal(expression, value);
@@ -69,7 +75,9 @@ public class SimpleExpression implements Criterion {
       case GTE:
         return builder.greaterThanOrEqualTo(expression, (Comparable) value);
       case IN:
-        return expression.in(value);
+        return expression.in((Object[]) value);
+      case IS_NULL:
+        return expression.isNull();
       default:
         return null;
     }

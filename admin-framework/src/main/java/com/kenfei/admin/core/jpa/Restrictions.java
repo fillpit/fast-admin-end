@@ -1,9 +1,6 @@
 package com.kenfei.admin.core.jpa;
 
-
-import org.springframework.util.StringUtils;
-
-import java.util.Collection;
+import org.springframework.util.ObjectUtils;
 
 /**
  * 条件构造器 用于创建条件表达式
@@ -16,7 +13,7 @@ public class Restrictions {
   }
 
   public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull) {
-    if (ignoreNull && StringUtils.isEmpty(value)) {
+    if (ignoreNull && ObjectUtils.isEmpty(value)) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.EQ);
@@ -27,7 +24,7 @@ public class Restrictions {
   }
 
   public static SimpleExpression notEq(String fieldName, Object value, boolean ignoreNull) {
-    if (ignoreNull && StringUtils.isEmpty(value)) {
+    if (ignoreNull && ObjectUtils.isEmpty(value)) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.NE);
@@ -38,7 +35,7 @@ public class Restrictions {
   }
 
   public static SimpleExpression like(String fieldName, String value, boolean ignoreNull) {
-    if (ignoreNull && StringUtils.isEmpty(value)) {
+    if (ignoreNull && ObjectUtils.isEmpty(value)) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.LIKE);
@@ -49,7 +46,7 @@ public class Restrictions {
   }
 
   public static SimpleExpression likeLeft(String fieldName, String value, boolean ignoreNull) {
-    if (ignoreNull && StringUtils.isEmpty(value)) {
+    if (ignoreNull && ObjectUtils.isEmpty(value)) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.LIKE_LEFT);
@@ -60,7 +57,7 @@ public class Restrictions {
   }
 
   public static SimpleExpression likeRight(String fieldName, String value, boolean ignoreNull) {
-    if (ignoreNull && StringUtils.isEmpty(value)) {
+    if (ignoreNull && ObjectUtils.isEmpty(value)) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.LIKE_RIGHT);
@@ -71,7 +68,7 @@ public class Restrictions {
   }
 
   public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull) {
-    if (ignoreNull && StringUtils.isEmpty(value)) {
+    if (ignoreNull && ObjectUtils.isEmpty(value)) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.GT);
@@ -82,7 +79,7 @@ public class Restrictions {
   }
 
   public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull) {
-    if (ignoreNull && StringUtils.isEmpty(value)) {
+    if (ignoreNull && ObjectUtils.isEmpty(value)) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.LT);
@@ -93,7 +90,7 @@ public class Restrictions {
   }
 
   public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull) {
-    if (ignoreNull && StringUtils.isEmpty(value)) {
+    if (ignoreNull && ObjectUtils.isEmpty(value)) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.LTE);
@@ -104,7 +101,7 @@ public class Restrictions {
   }
 
   public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull) {
-    if (ignoreNull && StringUtils.isEmpty(value)) {
+    if (ignoreNull && ObjectUtils.isEmpty(value)) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.GTE);
@@ -127,30 +124,30 @@ public class Restrictions {
   }
 
   @SuppressWarnings("rawtypes")
-  public static SimpleExpression in(String fieldName, Collection value) {
+  public static SimpleExpression in(String fieldName, Object... value) {
     return in(fieldName, value, true);
   }
 
   @SuppressWarnings("rawtypes")
-  public static SimpleExpression in(String fieldName, Collection value, boolean ignoreNull) {
-    if (ignoreNull && (value == null || value.isEmpty())) {
+  public static SimpleExpression in(String fieldName, Object[] value, boolean ignoreNull) {
+    if (ignoreNull && (value == null || ObjectUtils.isEmpty(value))) {
       return null;
     }
     return new SimpleExpression(fieldName, value, Criterion.Operator.IN);
   }
 
   @SuppressWarnings("rawtypes")
-  public static LogicalExpression notIn(String fieldName, Collection value) {
+  public static LogicalExpression notIn(String fieldName, Object... value) {
     return notIn(fieldName, value, true);
   }
 
   @SuppressWarnings("rawtypes")
-  public static LogicalExpression notIn(String fieldName, Collection value, boolean ignoreNull) {
-    if (ignoreNull && (value == null || value.isEmpty())) {
+  public static LogicalExpression notIn(String fieldName, Object[] value, boolean ignoreNull) {
+    if (ignoreNull && (value == null || ObjectUtils.isEmpty(value))) {
       return null;
     }
 
-    SimpleExpression[] ses = new SimpleExpression[value.size()];
+    SimpleExpression[] ses = new SimpleExpression[value.length];
     int i = 0;
     for (Object obj : value) {
       ses[i] = new SimpleExpression(fieldName, obj, Criterion.Operator.NE);
