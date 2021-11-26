@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2021/11/17 21:37
  */
 public class Criteria<T> implements Specification<T> {
-  private List<Criterion> criterions = new ArrayList<>();
+  private final List<Criterion> criterions = new ArrayList<>();
 
   @Override
   @Nullable

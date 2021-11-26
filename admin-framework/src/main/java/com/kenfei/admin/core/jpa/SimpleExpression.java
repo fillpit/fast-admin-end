@@ -48,7 +48,7 @@ public class SimpleExpression implements Criterion {
     }
 
     if (ObjectUtils.isEmpty(value)) {
-      this.operator = Criterion.Operator.IS_NULL;
+      this.operator = Criterion.Operator.NULL;
     }
 
     switch (operator) {
@@ -76,8 +76,6 @@ public class SimpleExpression implements Criterion {
         return builder.greaterThanOrEqualTo(expression, (Comparable) value);
       case IN:
         return expression.in((Object[]) value);
-      case IS_NULL:
-        return expression.isNull();
       default:
         return null;
     }
