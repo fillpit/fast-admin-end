@@ -18,7 +18,7 @@ import java.io.Serializable;
  */
 @Slf4j
 @Validated
-public abstract class AbstractController<T, ID extends Serializable> {
+public abstract class AbstractController<T extends AbstractEntity, ID extends Serializable> {
 
   private InterfaceService<T, ID> service;
 

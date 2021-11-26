@@ -13,5 +13,5 @@ import java.io.Serializable;
  * @date 2017/11/20
  */
 @NoRepositoryBean
-public interface BaseRepository<T, ID extends Serializable>
+public interface BaseRepository<T extends AbstractEntity, ID extends Serializable>
     extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {}

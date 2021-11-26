@@ -14,7 +14,7 @@ import java.util.List;
  * @author fei
  * @date 2017/8/16
  */
-public interface InterfaceService<T, ID extends Serializable> {
+public interface InterfaceService<T extends AbstractEntity, ID extends Serializable> {
 
   /**
    * 保存对象

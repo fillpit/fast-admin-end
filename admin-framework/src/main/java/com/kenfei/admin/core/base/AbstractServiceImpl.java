@@ -1,6 +1,9 @@
 package com.kenfei.admin.core.base;
 
 import com.kenfei.admin.core.exception.AppException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +25,7 @@ import java.util.List;
  * @date 2017/8/17
  */
 @Validated
-public abstract class AbstractServiceImpl<T, ID extends Serializable> implements InterfaceService<T, ID> {
+public abstract class AbstractServiceImpl<T extends AbstractEntity, ID extends Serializable> implements InterfaceService<T, ID> {
 
   private BaseRepository<T, ID> repository;
 
@@ -60,6 +63,7 @@ public abstract class AbstractServiceImpl<T, ID extends Serializable> implements
    * @return 更新后的实体对象
    */
   @Override
+  @CachePut(key = "'id:' + #p0.id")
   @Transactional(rollbackFor = Exception.class)
   public T update(@Valid T entity) {
     return repository.save(entity);
@@ -77,6 +81,7 @@ public abstract class AbstractServiceImpl<T, ID extends Serializable> implements
   }
 
   @Override
+  @CacheEvict(key = "'id:' + #p0.id")
   @Transactional(rollbackFor = Exception.class)
   public void delete(T entity) {
     Class<?> clazz = entity.getClass();
@@ -111,6 +116,7 @@ public abstract class AbstractServiceImpl<T, ID extends Serializable> implements
   }
 
   @Override
+  @Cacheable(key = "'id:' + #p0")
   public T findById(@NotNull ID id) {
     return repository.findById(id).orElseThrow(() -> new AppException("无效 ID"));
   }
