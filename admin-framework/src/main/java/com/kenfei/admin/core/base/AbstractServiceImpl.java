@@ -1,6 +1,7 @@
 package com.kenfei.admin.core.base;
 
 import com.kenfei.admin.core.exception.AppException;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -63,7 +64,6 @@ public abstract class AbstractServiceImpl<T extends AbstractEntity, ID extends S
    * @return 更新后的实体对象
    */
   @Override
-  @CachePut(key = "'id:' + #p0.id")
   @Transactional(rollbackFor = Exception.class)
   public T update(@Valid T entity) {
     return repository.save(entity);
@@ -81,7 +81,6 @@ public abstract class AbstractServiceImpl<T extends AbstractEntity, ID extends S
   }
 
   @Override
-  @CacheEvict(key = "'id:' + #p0.id")
   @Transactional(rollbackFor = Exception.class)
   public void delete(T entity) {
     Class<?> clazz = entity.getClass();
@@ -116,7 +115,6 @@ public abstract class AbstractServiceImpl<T extends AbstractEntity, ID extends S
   }
 
   @Override
-  @Cacheable(key = "'id:' + #p0")
   public T findById(@NotNull ID id) {
     return repository.findById(id).orElseThrow(() -> new AppException("无效 ID"));
   }
