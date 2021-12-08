@@ -136,14 +136,8 @@ public class FileUtils {
    * 将文件名解析成文件的上传路径
    */
   public static String upload(MultipartFile file, String filePath) {
-    Date date = new Date();
-    SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmssS");
-    String name = getFileNameNoEx(file.getOriginalFilename());
-    String suffix = getExtensionName(file.getOriginalFilename());
-    String nowStr = "-" + format.format(date);
+    String path = getFullFilePath(file, filePath);
     try {
-      String fileName = name + nowStr + "." + suffix;
-      String path = filePath + fileName;
       // getCanonicalFile 可解析正确各种路径
       File dest = new File(path).getCanonicalFile();
       // 检测是否存在目录
@@ -154,11 +148,28 @@ public class FileUtils {
       }
       // 文件写入
       file.transferTo(dest);
-      return fileName;
+      return path;
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     }
     return null;
+  }
+
+  /**
+   * 获取文件保存的全路径
+   * @param file 文件对象
+   * @param filePath 文件夹路径
+   * @return 保存路径
+   */
+  public static String getFullFilePath(MultipartFile file, String filePath) {
+    Date date = new Date();
+    SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmssS");
+    String name = getFileNameNoEx(file.getOriginalFilename());
+    String suffix = getExtensionName(file.getOriginalFilename());
+    String nowStr = "-" + format.format(date);
+    String fileName = name + nowStr + "." + suffix;
+
+    return filePath + fileName;
   }
 
   public static void del(String path) {
